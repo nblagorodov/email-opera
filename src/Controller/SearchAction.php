@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Service\EmailValidation\Exception\EmailValidationException;
 use App\Service\SearchHandlerFactory;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,15 +15,18 @@ class SearchAction
 {
     public function __construct(
         private SearchHandlerFactory $searchHandlerFactory,
+        private LoggerInterface $logger,
     ) {
     }
 
     public function __invoke(Request $request): JsonResponse
     {
         try {
-            $searchString = $request->get('search_string');
+            $this->logRequest($request);
 
-            $handler = $this->searchHandlerFactory->create($request->get('search_string'));
+            $searchString = $this->getSearchString($request);
+
+            $handler = $this->searchHandlerFactory->create($searchString);
 
             return new JsonResponse(
                 $handler->search($searchString),
@@ -39,5 +43,18 @@ class SearchAction
                 'error' => 'something went wrong.',
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private function getSearchString(Request $request): string
+    {
+        return trim($request->get('search_string'), " \n\r\t\v\0@");
+    }
+
+    private function logRequest(Request $request): void
+    {
+        $userAgent = $request->headers->get('User-Agent');
+        $searchString = $this->getSearchString($request);
+
+        $this->logger->info(sprintf('%s - %s', $userAgent, $searchString));
     }
 }

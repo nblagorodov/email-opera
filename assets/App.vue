@@ -31,5 +31,7 @@ body, html {
     flex-direction: column;
 
     height: 100vh;
+
+    position: relative;
 }
 </style>

@@ -34,6 +34,10 @@ services:
             $apiKey: '%env(VK_API_KEY)%'
             $version: '%env(VK_API_VERSION)%'
 
+    App\HttpClient\SocialNetwork\TelegramClient:
+        arguments:
+            $apiUrl: '%env(TELEGRAM_API_URL)%'
+
     App\Service\SearchHandlerFactory:
         arguments:
             $handlers:
@@ -46,6 +50,7 @@ services:
                 emailrep: '@App\Service\Api\DataBreach\EmailRepFetcher'
                 leak-lookup: '@App\Service\Api\DataBreach\LeakLookupFetcher'
                 vk: '@App\Service\Api\SocialNetwork\VKFetcher'
+                telegram: '@App\Service\Api\SocialNetwork\TelegramFetcher'
 
 
     App\Service\SearchHandler\UsernameSearchHandler:
@@ -53,6 +58,7 @@ services:
             $dataFetchers:
                 leak-lookup: '@App\Service\Api\DataBreach\LeakLookupFetcher'
                 vk: '@App\Service\Api\SocialNetwork\VKFetcher'
+                telegram: '@App\Service\Api\SocialNetwork\TelegramFetcher'
 
     App\Service\EmailValidation\ValidatorInterface: '@App\Service\EmailValidation\CompositeValidator'
 

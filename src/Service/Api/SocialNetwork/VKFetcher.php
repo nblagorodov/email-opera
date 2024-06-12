@@ -28,12 +28,12 @@ final readonly class VKFetcher implements DataFetcherInterface
             }
 
             return [
-                'first_name' => $user['first_name'] ?? '',
-                'last_name' => $user['last_name'] ?? '',
-                'city' => $user['city']['title'] ?? '',
-                'country' => $user['country']['title'] ?? '',
-                'status' => $user['status'] ?? '',
-                'birth_date' => $user['bdate'] ?? '',
+                'first_name' => $user['first_name'] ?? null,
+                'last_name' => $user['last_name'] ?? null,
+                'city' => $user['city']['title'] ?? null,
+                'country' => $user['country']['title'] ?? null,
+                'status' => $user['status'] ?? null,
+                'birth_date' => $user['bdate'] ?? null,
             ];
         } catch (\Throwable) {
             return [];

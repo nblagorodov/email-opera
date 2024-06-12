@@ -29,6 +29,15 @@ services:
             $handlers:
                 email: '@App\Service\SearchHandler\EmailSearchHandler'
 
+    App\Service\EmailValidation\ValidatorInterface: '@App\Service\EmailValidation\CompositeValidator'
+
+    App\Service\EmailValidation\CompositeValidator:
+        arguments:
+            $validators: [
+                '@App\Service\EmailValidation\FormatValidator',
+                '@App\Service\EmailValidation\LengthValidator',
+                '@App\Service\EmailValidation\DomainValidator',
+            ]
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

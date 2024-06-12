@@ -18,9 +18,11 @@
         "build": "encore production --progress"
     },
     "dependencies": {
+        "node-sass": "^9.0.0",
         "sass": "^1.77.5",
         "sass-loader": "^14.2.1",
         "vue": "^3.4.27",
-        "vue-loader": "^17.4.2"
+        "vue-loader": "^17.4.2",
+        "vue-style-loader": "^4.1.3"
     }
 }

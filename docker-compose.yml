@@ -9,6 +9,8 @@ services:
     volumes:
       - ./:/var/www/html
     command: bash -c "npm install && npm run watch"
+    ports:
+      - "8080:8080"
   php:
     hostname: email-opera-php
     container_name: email-opera-php

@@ -2,11 +2,10 @@
 
 namespace App\Service\Api\DataBreach;
 
-use App\HttpClient\DataBreach\EmailRepClient;
 use App\HttpClient\DataBreach\LeakLookupClient;
 use App\Service\Api\DataFetcherInterface;
 use App\ValueObject\SearchType;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 final readonly class LeakLookupFetcher implements DataFetcherInterface
 {
@@ -17,19 +16,17 @@ final readonly class LeakLookupFetcher implements DataFetcherInterface
 
     public function fetch(string $searchString, SearchType $type): array
     {
-        $response = $this->client->request($searchString, $this->getApiType($type));
+        try {
+            $response = $this->client->request($searchString, $this->getApiType($type));
 
-        $content = json_decode($response->getContent(false), true);
+            $breachSites = json_decode($response->getContent(), true)['message'] ?? [];
 
-        $success = $content['error'] === "false";
-        $breachData = $content['message'] ?? [];
-
-        return [
-            'success' => $success,
-            'data' => [
-                'breaches' => $success && is_array($breachData) ? array_keys($breachData) : [],
-            ],
-        ];
+            return [
+                'breach_sites' => array_keys($breachSites),
+            ];
+        } catch (HttpExceptionInterface) {
+            return [];
+        }
     }
 
     private function getApiType(SearchType $type): string

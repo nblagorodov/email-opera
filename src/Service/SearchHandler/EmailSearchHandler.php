@@ -35,7 +35,7 @@ final readonly class EmailSearchHandler implements SearchHandlerInterface
             $result[$apiName] = $fetcher->fetch($searchString, SearchType::Email);
         }
 
-        $this->logger->info(json_encode($result));
-        return $result;
+        $this->logger->info(json_encode(array_filter($result)));
+        return array_filter($result);
     }
 }

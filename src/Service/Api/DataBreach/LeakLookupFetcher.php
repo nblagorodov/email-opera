@@ -16,17 +16,17 @@ final readonly class LeakLookupFetcher implements DataFetcherInterface
 
     public function fetch(string $searchString, SearchType $type): array
     {
-        try {
-            $response = $this->client->request($searchString, $this->getApiType($type));
+        $response = $this->client->request($searchString, $this->getApiType($type));
 
-            $breachSites = json_decode($response->getContent(), true)['message'] ?? [];
+        $content = json_decode($response->getContent(), true);
 
-            return [
-                'breach_sites' => array_keys($breachSites),
-            ];
-        } catch (HttpExceptionInterface) {
+        if ($content['error'] === 'true') {
             return [];
         }
+
+        return [
+            'breach_sites' => array_keys($content['message']),
+        ];
     }
 
     private function getApiType(SearchType $type): string

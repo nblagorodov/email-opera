@@ -28,16 +28,31 @@ services:
         arguments:
             $apiKey: '%env(LEAK_LOOKUP_API_KEY)%'
 
+
+    App\HttpClient\SocialNetwork\VKClient:
+        arguments:
+            $apiKey: '%env(VK_API_KEY)%'
+            $version: '%env(VK_API_VERSION)%'
+
     App\Service\SearchHandlerFactory:
         arguments:
             $handlers:
                 email: '@App\Service\SearchHandler\EmailSearchHandler'
+                user: '@App\Service\SearchHandler\UsernameSearchHandler'
 
     App\Service\SearchHandler\EmailSearchHandler:
         arguments:
             $dataFetchers:
                 emailrep: '@App\Service\Api\DataBreach\EmailRepFetcher'
                 leak-lookup: '@App\Service\Api\DataBreach\LeakLookupFetcher'
+                vk: '@App\Service\Api\SocialNetwork\VKFetcher'
+
+
+    App\Service\SearchHandler\UsernameSearchHandler:
+        arguments:
+            $dataFetchers:
+                leak-lookup: '@App\Service\Api\DataBreach\LeakLookupFetcher'
+                vk: '@App\Service\Api\SocialNetwork\VKFetcher'
 
     App\Service\EmailValidation\ValidatorInterface: '@App\Service\EmailValidation\CompositeValidator'
 

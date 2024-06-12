@@ -2,8 +2,8 @@
 
 namespace App\ValueObject;
 
-enum SearchType
+enum SearchType: string
 {
-    case Email;
-    case User;
+    case Email = 'email';
+    case User = 'user';
 }

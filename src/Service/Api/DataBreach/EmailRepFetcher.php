@@ -28,7 +28,7 @@ final readonly class EmailRepFetcher implements DataFetcherInterface
                 'spam' => $content['details']['spam'] ?? null,
                 'domain_reputation' => $content['details']['domain_reputation'] ?? null,
             ];
-        } catch (HttpExceptionInterface) {
+        } catch (\Throwable) {
             return [];
         }
     }

@@ -3,11 +3,10 @@
 namespace App\Service;
 
 use App\Service\SearchHandler\SearchHandlerInterface;
+use App\ValueObject\SearchType;
 
 final readonly class SearchHandlerFactory
 {
-    private const EMAIL = 'email';
-
     /**
      * @param array<string, SearchHandlerInterface> $handlers
      */
@@ -23,13 +22,13 @@ final readonly class SearchHandlerFactory
     {
         $type = $this->defineType($searchString);
 
-        return $this->handlers[$type];
+        return $this->handlers[$type->value];
     }
 
     /**
      * @throws \ValueError
      */
-    private function defineType(string $searchString): string
+    private function defineType(string $searchString): SearchType
     {
         $searchParts = explode('@', $searchString);
 
@@ -38,10 +37,10 @@ final readonly class SearchHandlerFactory
         }
 
         if (count($searchParts) === 2 && $searchParts[0] && $searchParts[1]) {
-            return self::EMAIL;
+            return SearchType::Email;
         }
 
-        $this->throwInvalidTypeException();
+        return SearchType::User;
     }
 
     /**

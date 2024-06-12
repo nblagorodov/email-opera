@@ -22,11 +22,12 @@ final readonly class VKClient
      */
     public function getUser(string $username): ResponseInterface
     {
-        return $this->client->request('GET', 'https://api.vk.com/method/users.get', [
+        return $this->client->request('GET', 'https://api.vk.ru/method/users.get', [
             'query' => [
                 'access_token' => $this->apiKey,
                 'v' => $this->version,
                 'user_id' => $username,
+                'fields' => self::ADDITIONAL_FIELDS,
             ],
         ]);
     }

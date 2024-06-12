@@ -4,17 +4,15 @@ namespace App\Service\SearchHandler;
 
 use App\Service\Api\DataFetcherInterface;
 use App\Service\EmailValidation\Exception\EmailValidationException;
-use App\Service\EmailValidation\ValidatorInterface;
 use App\ValueObject\SearchType;
 use Psr\Log\LoggerInterface;
 
-final readonly class EmailSearchHandler implements SearchHandlerInterface
+final readonly class UsernameSearchHandler implements SearchHandlerInterface
 {
     /**
      * @param array<string, DataFetcherInterface> $dataFetchers
      */
     public function __construct(
-        private ValidatorInterface $emailValidator,
         private array $dataFetchers,
         private LoggerInterface $logger,
     ) {
@@ -25,14 +23,12 @@ final readonly class EmailSearchHandler implements SearchHandlerInterface
      */
     public function search(string $searchString): array
     {
-        $this->emailValidator->validate($searchString);
-
         $result = [
-            'type' => SearchType::Email->value,
+            'type' => SearchType::User->value,
         ];
 
         foreach ($this->dataFetchers as $apiName => $fetcher) {
-            $result[$apiName] = $fetcher->fetch($searchString, SearchType::Email);
+            $result[$apiName] = $fetcher->fetch($searchString, SearchType::User);
         }
 
         $this->logger->info(json_encode(array_filter($result)));

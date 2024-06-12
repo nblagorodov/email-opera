@@ -24,6 +24,7 @@ body, html {
     font-family: "Anonymous Pro", monospace;
     font-weight: 400;
     font-style: normal;
+    font-size: 20px;
 }
 
 .body {

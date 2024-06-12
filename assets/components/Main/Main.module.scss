@@ -25,6 +25,13 @@
   margin: 0;
 }
 
+#search {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 50px;
+}
+
 .search-box {
   display: flex;
   flex-direction: row;
@@ -45,6 +52,10 @@
   border: 0;
 }
 
+#search-field:focus {
+  outline: none;
+}
+
 #search-field {
   width: 960px;
   padding: 15px;
@@ -58,6 +69,14 @@
   border-left: 2px solid black;
 
   background-color: #B28BF1;
+}
+
+#search-button:disabled {
+  background-color: rgba(178, 139, 241, 0.5);
+}
+
+.error-box {
+  font-weight: bold;
 }
 
 .loading-overlay {

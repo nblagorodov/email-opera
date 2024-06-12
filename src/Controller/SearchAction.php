@@ -22,10 +22,12 @@ class SearchAction
         try {
             $searchString = $request->get('search_string');
 
-            $searchHandler = $this->searchHandlerFactory->create($request->get('search_string'));
-            $searchHandler->search($searchString);
+            $handler = $this->searchHandlerFactory->create($request->get('search_string'));
 
-            return new JsonResponse(['success' => true]);
+            return new JsonResponse(
+                $handler->search($searchString),
+                Response::HTTP_OK
+            );
         } catch (EmailValidationException $exception) {
             return new JsonResponse([
                 'success' => false,

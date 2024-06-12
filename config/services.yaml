@@ -24,10 +24,20 @@ services:
         resource: '../src/Controller/'
         tags: ['controller.service_arguments']
 
+    App\HttpClient\DataBreach\LeakLookupClient:
+        arguments:
+            $apiKey: '%env(LEAK_LOOKUP_API_KEY)%'
+
     App\Service\SearchHandlerFactory:
         arguments:
             $handlers:
                 email: '@App\Service\SearchHandler\EmailSearchHandler'
+
+    App\Service\SearchHandler\EmailSearchHandler:
+        arguments:
+            $dataFetchers:
+                emailrep: '@App\Service\Api\DataBreach\EmailRepFetcher'
+                leak-lookup: '@App\Service\Api\DataBreach\LeakLookupFetcher'
 
     App\Service\EmailValidation\ValidatorInterface: '@App\Service\EmailValidation\CompositeValidator'
 

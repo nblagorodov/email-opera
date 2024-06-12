@@ -4,5 +4,8 @@ namespace App\Service\SearchHandler;
 
 interface SearchHandlerInterface
 {
-    public function search(string $searchString);
+    /**
+     * @return array<string, mixed>
+     */
+    public function search(string $searchString): array;
 }

@@ -1,5 +1,6 @@
 <template>
     <div id="search-results">
+        <LeakLookup :leak-data="results.leak_lookup" />
         <div id="social-networks">
             <Telegram :telegram-data="results.telegram"/>
             <VK :vk-data="results.vk"/>
@@ -10,6 +11,7 @@
 <script setup>
 import VK from "./SocialNetworks/VK.vue";
 import Telegram from "./SocialNetworks/Telegram.vue";
+import LeakLookup from "./DataBreach/LeakLookup.vue";
 
 const props = defineProps({
     results: {
@@ -24,16 +26,18 @@ const props = defineProps({
     display: flex;
     flex-direction: column;
     width: 100%;
+
+    row-gap: 40px;
 }
 
 #social-networks {
     display: flex;
     flex-direction: row;
 
-    width: 100%;
-
     box-sizing: border-box;
     border: 2px solid #B28BF1;
+
+    width: 100%;
 }
 
 #social-networks div:first-child {

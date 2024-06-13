@@ -48,7 +48,7 @@ services:
         arguments:
             $dataFetchers:
                 emailrep: '@App\Service\Api\DataBreach\EmailRepFetcher'
-                leak-lookup: '@App\Service\Api\DataBreach\LeakLookupFetcher'
+                leak_lookup: '@App\Service\Api\DataBreach\LeakLookupFetcher'
                 vk: '@App\Service\Api\SocialNetwork\VKFetcher'
                 telegram: '@App\Service\Api\SocialNetwork\TelegramFetcher'
 
@@ -56,7 +56,7 @@ services:
     App\Service\SearchHandler\UsernameSearchHandler:
         arguments:
             $dataFetchers:
-                leak-lookup: '@App\Service\Api\DataBreach\LeakLookupFetcher'
+                leak_lookup: '@App\Service\Api\DataBreach\LeakLookupFetcher'
                 vk: '@App\Service\Api\SocialNetwork\VKFetcher'
                 telegram: '@App\Service\Api\SocialNetwork\TelegramFetcher'
 

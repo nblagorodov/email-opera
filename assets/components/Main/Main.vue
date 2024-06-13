@@ -3,8 +3,9 @@
         <div v-if="isLoading" class="loading-overlay">
             <span class="loader"></span>
         </div>
-        <div :class="'content' + (!isResultsStep ? ' align-center' : '')">
-            <h1 v-if="!isResultsStep" class="header">Find all the data you need</h1>
+        <div :class="'content' + (!searchResult ? ' align-center' : '')">
+            <h1 v-if="!searchResult" class="header">Find all the data you need</h1>
+
             <form id="search">
                 <div class="search-box">
                     <input
@@ -25,19 +26,23 @@
                 </div>
 
                 <div v-if="error" class="error-box">{{ error }}</div>
+
+                <SearchResult v-if="searchResult" :results="searchResult" />
             </form>
         </div>
     </div>
 </template>
 
 <script setup>
-import {ref} from "vue";
+import {reactive, ref} from "vue";
 import {client} from "../../bootstrap";
+import SearchResult from "./SearchResult/SearchResult";
 
-const isResultsStep = ref(false);
 const isLoading = ref(false);
 
 const searchString = ref('');
+let searchResult = reactive(null);
+
 const error = ref('');
 
 const handleSearch = async (event) => {
@@ -47,12 +52,17 @@ const handleSearch = async (event) => {
 
     await client
         .get(`search/${searchString.value}`)
-        // .catch(error => error.value = error.response.data.error);
-        .catch(response => error.value = response?.response?.data?.error);
+        .then(response => {
+            console.log(response);
+            searchResult = response.data;
+            error.value = null;
+        })
+        .catch(response => {
+            searchResult = null;
+            error.value = response?.response?.data?.error;
+        });
 
     isLoading.value = false;
-
-    isResultsStep.value = true;
 }
 
 </script>

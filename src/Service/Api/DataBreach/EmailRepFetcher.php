@@ -5,8 +5,6 @@ namespace App\Service\Api\DataBreach;
 use App\HttpClient\DataBreach\EmailRepClient;
 use App\Service\Api\DataFetcherInterface;
 use App\ValueObject\SearchType;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 final readonly class EmailRepFetcher implements DataFetcherInterface
 {

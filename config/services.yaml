@@ -70,5 +70,14 @@ services:
                 '@App\Service\EmailValidation\DomainValidator',
             ]
 
+    App\Service\Api\SocialNetwork\VKFetcher:
+        arguments:
+            $useFakeData: '%env(bool:ENABLE_DEPERSONALIZATION)%'
+
+
+    App\Service\Api\SocialNetwork\TelegramFetcher:
+        arguments:
+            $useFakeData: '%env(bool:ENABLE_DEPERSONALIZATION)%'
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

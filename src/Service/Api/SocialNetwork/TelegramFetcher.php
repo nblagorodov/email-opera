@@ -6,11 +6,13 @@ use App\HttpClient\SocialNetwork\TelegramClient;
 use App\Service\Api\DataFetcherInterface;
 use App\ValueObject\SearchType;
 
-final readonly class TelegramFetcher implements DataFetcherInterface
+final class TelegramFetcher extends AbstractFetcher implements DataFetcherInterface
 {
     public function __construct(
         private TelegramClient $client,
+        bool $useFakeData,
     ) {
+        parent::__construct($useFakeData);
     }
 
     public function fetch(string $searchString, SearchType $type): array
@@ -25,11 +27,7 @@ final readonly class TelegramFetcher implements DataFetcherInterface
                 return [];
             }
 
-            return [
-                'first_name' => $responseData['User']['first_name'] ?? null,
-                'last_name' => $responseData['User']['last_name'] ?? null,
-                'about' => $user['full']['about'] ?? null,
-            ];
+            return $this->getFetchedData($responseData);
         } catch (\Throwable) {
             return [];
         }
@@ -42,5 +40,22 @@ final readonly class TelegramFetcher implements DataFetcherInterface
         }
 
         return current(explode('@', $searchString));
+    }
+
+    protected function getRealFetchedData(array $responseData): array
+    {return [
+        'first_name' => $responseData['User']['first_name'] ?? null,
+        'last_name' => $responseData['User']['last_name'] ?? null,
+        'about' => $responseData['full']['about'] ?? null,
+    ];
+    }
+
+    protected function getFakeFetchedData(array $responseData): array
+    {
+        return [
+            'first_name' => isset($responseData['User']['first_name']) ? $this->faker->firstName : null,
+            'last_name' => isset($responseData['User']['last_name']) ? $this->faker->lastName : null,
+            'about' => isset($responseData['full']['about']) ? $this->faker->sentence : null,
+        ];
     }
 }

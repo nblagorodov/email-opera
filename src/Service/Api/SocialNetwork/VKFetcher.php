@@ -5,14 +5,14 @@ namespace App\Service\Api\SocialNetwork;
 use App\HttpClient\SocialNetwork\VKClient;
 use App\Service\Api\DataFetcherInterface;
 use App\ValueObject\SearchType;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
-final readonly class VKFetcher implements DataFetcherInterface
+final class VKFetcher extends AbstractFetcher implements DataFetcherInterface
 {
     public function __construct(
         private VKClient $client,
+        bool $useFakeData,
     ) {
+        parent::__construct($useFakeData);
     }
 
     public function fetch(string $searchString, SearchType $type): array
@@ -27,14 +27,7 @@ final readonly class VKFetcher implements DataFetcherInterface
                 return [];
             }
 
-            return [
-                'first_name' => $user['first_name'] ?? null,
-                'last_name' => $user['last_name'] ?? null,
-                'city' => $user['city']['title'] ?? null,
-                'country' => $user['country']['title'] ?? null,
-                'status' => $user['status'] ?? null,
-                'birth_date' => $user['bdate'] ?? null,
-            ];
+            return $this->getFetchedData($user);
         } catch (\Throwable) {
             return [];
         }
@@ -47,5 +40,29 @@ final readonly class VKFetcher implements DataFetcherInterface
         }
 
         return current(explode('@', $searchString));
+    }
+
+    protected function getRealFetchedData(array $responseData): array
+    {
+        return [
+            'first_name' => $responseData['first_name'] ?? null,
+            'last_name' => $responseData['last_name'] ?? null,
+            'city' => $responseData['city']['title'] ?? null,
+            'country' => $responseData['country']['title'] ?? null,
+            'status' => $responseData['status'] ?? null,
+            'birth_date' => $responseData['bdate'] ?? null,
+        ];
+    }
+
+    protected function getFakeFetchedData(array $responseData): array
+    {
+        return [
+            'first_name' => isset($responseData['first_name']) ? $this->faker->firstName : null,
+            'last_name' => isset($responseData['last_name']) ? $this->faker->lastName : null,
+            'city' => isset($responseData['city']['title']) ? $this->faker->city : null,
+            'country' => isset($responseData['country']['title']) ? $this->faker->country : null,
+            'status' => isset($responseData['status']) ? $this->faker->sentence : null,
+            'birth_date' => isset($responseData['bdate']) ? $this->faker->date : null,
+        ];
     }
 }

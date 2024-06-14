@@ -3,8 +3,8 @@
         <span>leak-lookup: </span>
 
         <b>
-            <template v-if="leakData">{{ getBreachList() }}</template>
-            <template v-else>unavailable.</template>
+            <template v-if="leakData">{{ getBreachList() ?? '&mdash;' }}</template>
+            <template v-else><b>unavailable.</b></template>
         </b>
     </div>
 </template>
@@ -18,8 +18,8 @@ const props = defineProps({
 })
 
 const getBreachList = () => {
-    if (!props.leakData?.breach_sites) {
-        return '&mdash;';
+    if (!props.leakData?.breach_sites?.length) {
+        return null;
     }
 
     return props.leakData.breach_sites.join(', ');

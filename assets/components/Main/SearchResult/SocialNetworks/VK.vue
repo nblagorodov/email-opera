@@ -24,7 +24,7 @@ const getName = () => {
         return '&mdash;'
     }
 
-    return `${props.vkData.first_name} ${props.vkData.last_name}`.trim();
+    return `${props.vkData.first_name ?? ''} ${props.vkData.last_name ?? ''}`.trim();
 }
 
 const getCountry = () => {

@@ -41,7 +41,7 @@ import SearchResult from "./SearchResult/SearchResult";
 const isLoading = ref(false);
 
 const searchString = ref('');
-let searchResult = reactive(null);
+let searchResult = ref(null);
 
 const error = ref('');
 
@@ -54,7 +54,7 @@ const handleSearch = async (event) => {
         .get(`search/${searchString.value}`)
         .then(response => {
             console.log(response);
-            searchResult = response.data;
+            searchResult.value = response.data;
             error.value = null;
         })
         .catch(response => {

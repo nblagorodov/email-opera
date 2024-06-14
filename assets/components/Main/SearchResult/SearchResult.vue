@@ -1,5 +1,6 @@
 <template>
     <div id="search-results">
+        <EmailRep v-if="results.type === 'email'" :email-rep-data="results.emailrep" />
         <LeakLookup :leak-data="results.leak_lookup" />
         <div id="social-networks">
             <Telegram :telegram-data="results.telegram"/>
@@ -12,6 +13,7 @@
 import VK from "./SocialNetworks/VK.vue";
 import Telegram from "./SocialNetworks/Telegram.vue";
 import LeakLookup from "./DataBreach/LeakLookup.vue";
+import EmailRep from "./DataBreach/EmailRep.vue";
 
 const props = defineProps({
     results: {

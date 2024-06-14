@@ -22,6 +22,6 @@ const getName = () => {
         return '&mdash;'
     }
 
-    return `${props.telegramData.first_name} ${props.telegramData.last_name}`.trim();
+    return `${props.telegramData.first_name ?? ''} ${props.telegramData.last_name ?? ''}`.trim();
 }
 </script>

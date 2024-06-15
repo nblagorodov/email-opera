@@ -3,8 +3,8 @@
         <div v-if="isLoading" class="loading-overlay">
             <span class="loader"></span>
         </div>
-        <div :class="'content' + (!searchResult ? ' align-center' : '')">
-            <h1 v-if="!searchResult" class="header">Find all the data you need</h1>
+        <div :class="'content' + (!error && !searchResult ? ' align-center' : '')">
+            <h1 v-if="!error && !searchResult" class="header">Find all the data you need</h1>
 
             <form id="search">
                 <div class="search-box">

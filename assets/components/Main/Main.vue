@@ -58,7 +58,7 @@ const handleSearch = async (event) => {
             error.value = null;
         })
         .catch(response => {
-            searchResult = null;
+            searchResult.value = null;
             error.value = response?.response?.data?.error;
         });
 

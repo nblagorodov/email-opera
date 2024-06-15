@@ -2,16 +2,14 @@
     <div id="emairep">
         <span>emailrep: </span>
 
-        <b>
-            <template v-if="emailRepData">
-                <div><b>reputation:</b> {{ emailRepData.reputation ?? '&mdash;' }}.</div>
-                <div><b>suspicious:</b> {{ emailRepData.suspicious ?? '&mdash;' }}.</div>
-                <div><b>recent malicious activity:</b> {{ emailRepData.malicious_activity_recent ?? '&mdash;' }}.</div>
-                <div><b>spam:</b> {{ emailRepData.spam ?? '&mdash;' }}.</div>
-                <div><b>domain reputation:</b> {{ emailRepData.domain_reputation ?? '&mdash;' }}.</div>
-            </template>
-            <template v-else><b>unavailable.</b></template>
-        </b>
+        <template v-if="emailRepData">
+            <div><b>reputation:</b> {{ emailRepData.reputation ?? '&mdash;' }}.</div>
+            <div><b>suspicious:</b> {{ emailRepData.suspicious ?? '&mdash;' }}.</div>
+            <div><b>recent malicious activity:</b> {{ emailRepData.malicious_activity_recent ?? '&mdash;' }}.</div>
+            <div><b>spam:</b> {{ emailRepData.spam ?? '&mdash;' }}.</div>
+            <div><b>domain reputation:</b> {{ emailRepData.domain_reputation ?? '&mdash;' }}.</div>
+        </template>
+        <template v-else><b>unavailable.</b></template>
     </div>
 </template>
 
